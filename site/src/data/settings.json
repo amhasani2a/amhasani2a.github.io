@@ -1,0 +1,13 @@
+{
+  "githubUsername": "amhasani2a",
+  "email": "hello@example.com",
+  "newsletterAction": "",
+  "pinnedRepos": [],
+  "maxRepos": 9,
+  "social": [
+    { "label": "GitHub", "url": "https://github.com/amhasani2a" },
+    { "label": "Telegram", "url": "https://t.me/" },
+    { "label": "X", "url": "https://x.com/" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/" }
+  ]
+}

@@ -1,0 +1,103 @@
+---
+import "../styles/global.css"
+import Header from "../components/Header.astro"
+import Footer from "../components/Footer.astro"
+import { ui, type Lang } from "../i18n/ui"
+import settings from "../data/settings.json"
+import profileFa from "../data/profile.fa.json"
+import profileEn from "../data/profile.en.json"
+
+interface Props {
+	lang: Lang
+	title?: string
+	description?: string
+	path?: string
+}
+
+const { lang, title, description, path = "/" } = Astro.props
+const profile = lang === "en" ? profileEn : profileFa
+const dir = ui[lang].dir
+const pageTitle = title ? `${title} — ${profile.name}` : `${profile.name} — ${profile.role}`
+const pageDesc = description || profile.tagline
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://example.com").toString()
+---
+
+<!doctype html>
+<html lang={lang} dir={dir} data-theme="dark" class="scroll-pt-24">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDesc} />
+		<meta name="author" content={profile.name} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+		<link rel="alternate" type="application/rss+xml" title="RSS" href={`${import.meta.env.BASE_URL}rss.xml`} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDesc} />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Inter:wght@300;400;500;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<script is:inline>
+			// no-flash theme boot
+			;(function () {
+				try {
+					var saved = localStorage.getItem("theme")
+					var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches
+					var theme = saved || (prefersLight ? "light" : "dark")
+					document.documentElement.setAttribute("data-theme", theme)
+				} catch (e) {}
+			})()
+		</script>
+	</head>
+	<body class="min-h-screen selection:text-ink">
+		<a
+			href="#main"
+			class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:z-50 focus:rounded-xl focus:bg-accent focus:px-4 focus:py-2 focus:text-white"
+			>{lang === "fa" ? "پرش به محتوا" : "Skip to content"}</a
+		>
+		<Header lang={lang} path={path} />
+		<main id="main">
+			<slot />
+		</main>
+		<Footer lang={lang} />
+
+		<script>
+			// Lazy scroll-reveal via IntersectionObserver
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("is-visible")
+							io.unobserve(entry.target)
+						}
+					}
+				},
+				{ rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+			)
+			document.querySelectorAll(".reveal").forEach((el, i) => {
+				;(el as HTMLElement).style.transitionDelay = `${Math.min(i % 6, 5) * 55}ms`
+				io.observe(el)
+			})
+		</script>
+		<script is:inline define:vars={{ social: settings.social }}>
+			// theme toggle
+			document.addEventListener("click", function (e) {
+				const btn = e.target instanceof Element ? e.target.closest("[data-theme-toggle]") : null
+				if (!btn) return
+				const root = document.documentElement
+				const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark"
+				root.setAttribute("data-theme", next)
+				try {
+					localStorage.setItem("theme", next)
+				} catch (err) {}
+			})
+		</script>
+	</body>
+</html>

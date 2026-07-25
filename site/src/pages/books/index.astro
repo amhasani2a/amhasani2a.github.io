@@ -1,0 +1,35 @@
+---
+import Base from "../../layouts/Base.astro"
+import BookCard from "../../components/BookCard.astro"
+import { t, type Lang } from "../../i18n/ui"
+import { getBooks } from "../../lib/content"
+
+const lang: Lang = "fa"
+const tr = t(lang)
+const books = await getBooks(lang)
+---
+
+<Base lang={lang} path="/books" title={tr("nav.books")}>
+	<div class="wrap py-14 md:py-20">
+		<p class="reveal eyebrow mb-3">{tr("nav.books")}</p>
+		<h1 class="reveal font-display text-3xl font-bold md:text-5xl">{tr("section.books")}</h1>
+		<div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+			{
+				books.map((book) => (
+					<BookCard
+						lang={lang}
+						title={book.data.title}
+						subtitle={book.data.subtitle}
+						year={book.data.year}
+						kind={book.data.kind}
+						status={book.data.status}
+						cover={book.data.cover}
+						link={book.data.link}
+						body={book.body}
+					/>
+				))
+			}
+		</div>
+		{!books.length && <p class="mt-10 text-sm text-muted">{tr("books.empty")}</p>}
+	</div>
+</Base>

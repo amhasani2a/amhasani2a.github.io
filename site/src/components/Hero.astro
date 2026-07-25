@@ -1,0 +1,50 @@
+---
+import { t, localePath, type Lang } from "../i18n/ui"
+import profileFa from "../data/profile.fa.json"
+import profileEn from "../data/profile.en.json"
+import settings from "../data/settings.json"
+
+interface Props {
+	lang: Lang
+}
+const { lang } = Astro.props
+const tr = t(lang)
+const profile = lang === "en" ? profileEn : profileFa
+---
+
+<section class="aurora relative isolate overflow-hidden pt-16 md:pt-24">
+	<div class="wrap">
+		<p class="reveal eyebrow mb-4">{profile.tagline}</p>
+		<h1 class="reveal h-display max-w-[18ch]">{profile.heroTitle}</h1>
+		<p class="reveal mt-6 max-w-prose text-lg text-muted">{profile.heroSubtitle}</p>
+
+		<div class="reveal mt-8 flex flex-wrap items-center gap-3">
+			<a href={localePath(lang, "/projects")} class="btn btn-primary">{tr("nav.projects")}</a>
+			<a href={localePath(lang, "/blog")} class="btn">{tr("nav.blog")}</a>
+			<a
+				href={"https://" + "github.com/" + settings.githubUsername}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn">GitHub ↗</a
+			>
+		</div>
+
+		<dl class="reveal mt-12 grid grid-cols-1 gap-3 sm:grid-cols-3">
+			<div class="card p-5">
+				<dt class="eyebrow">{lang === "fa" ? "نقش" : "Role"}</dt>
+				<dd class="mt-2 text-sm">{profile.role}</dd>
+			</div>
+			<div class="card p-5">
+				<dt class="eyebrow">{lang === "fa" ? "مکان" : "Location"}</dt>
+				<dd class="mt-2 text-sm">{profile.location}</dd>
+			</div>
+			<div class="card p-5">
+				<dt class="eyebrow">{lang === "fa" ? "وضعیت" : "Status"}</dt>
+				<dd class="mt-2 flex items-center gap-2 text-sm">
+					<span class="h-2 w-2 rounded-full bg-[#72BC8F]" aria-hidden="true"></span>
+					{profile.availability}
+				</dd>
+			</div>
+		</dl>
+	</div>
+</section>
