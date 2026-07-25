@@ -1,0 +1,19 @@
+---
+import Base from "../../layouts/Base.astro"
+import Repos from "../../components/Repos.astro"
+import { t, type Lang } from "../../i18n/ui"
+
+const lang: Lang = "fa"
+const tr = t(lang)
+---
+
+<Base lang={lang} path="/projects" title={tr("nav.projects")}>
+	<div class="wrap py-14 md:py-20">
+		<p class="reveal eyebrow mb-3">{tr("nav.projects")}</p>
+		<h1 class="reveal font-display text-3xl font-bold md:text-5xl">{tr("section.projects")}</h1>
+		<p class="reveal mt-3 max-w-prose text-muted">{tr("projects.subtitle")}</p>
+		<div class="mt-10">
+			<Repos lang={lang} limit={30} />
+		</div>
+	</div>
+</Base>

@@ -1,0 +1,71 @@
+---
+import { t, type Lang } from "../i18n/ui"
+import settings from "../data/settings.json"
+import profileFa from "../data/profile.fa.json"
+import profileEn from "../data/profile.en.json"
+
+interface Props {
+	lang: Lang
+}
+const { lang } = Astro.props
+const tr = t(lang)
+const profile = lang === "en" ? profileEn : profileFa
+---
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+	<div class="reveal card p-6 md:p-8">
+		<h3 class="font-display text-lg font-bold">{lang === "fa" ? "پیام مستقیم" : "Direct message"}</h3>
+		<p class="mt-3 max-w-prose text-sm leading-7 text-muted">{profile.contactText}</p>
+		<div class="mt-6 flex flex-wrap gap-3">
+			<a href={`mailto:${settings.email}`} class="btn btn-primary">{settings.email}</a>
+			{
+				settings.social.slice(0, 2).map((s) => (
+					<a href={s.url} target="_blank" rel="noopener noreferrer" class="btn">
+						{s.label}
+					</a>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="reveal card p-6 md:p-8">
+		<h3 class="font-display text-lg font-bold">{lang === "fa" ? "خبرنامه" : "Newsletter"}</h3>
+		<p class="mt-3 max-w-prose text-sm leading-7 text-muted">{profile.newsletterText}</p>
+		<form
+			class="mt-6 flex flex-col gap-3 sm:flex-row"
+			action={settings.newsletterAction || undefined}
+			method="post"
+			target="_blank"
+			data-newsletter
+		>
+			<label class="sr-only" for="newsletter-email">{tr("newsletter.placeholder")}</label>
+			<input
+				id="newsletter-email"
+				name="email"
+				type="email"
+				required
+				placeholder={tr("newsletter.placeholder")}
+				class="min-h-[44px] flex-1 rounded-xl border border-line bg-canvas px-4 text-sm text-ink placeholder:text-muted focus:border-accent focus:outline-none"
+			/>
+			<button type="submit" class="btn btn-primary">{tr("newsletter.button")}</button>
+		</form>
+		<p data-newsletter-note class="mt-3 hidden text-xs text-muted"></p>
+	</div>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLFormElement>("[data-newsletter]").forEach((form) => {
+		form.addEventListener("submit", (event) => {
+			if (form.getAttribute("action")) return // real provider (Buttondown/Mailchimp/Formspree)
+			event.preventDefault()
+			const note = form.parentElement?.querySelector<HTMLElement>("[data-newsletter-note]")
+			if (note) {
+				note.textContent =
+					document.documentElement.lang === "fa"
+						? "سرویس خبرنامه هنوز تنظیم نشده است (settings.json ← newsletterAction)."
+						: "Newsletter provider is not configured yet (settings.json → newsletterAction)."
+				note.classList.remove("hidden")
+			}
+		})
+	})
+</script>
