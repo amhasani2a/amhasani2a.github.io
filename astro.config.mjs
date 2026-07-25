@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap"
 // ⚠️ اگر ریپو را «amhasani2a.github.io» بسازی، base همین "/" می‌ماند.
 // اگر اسم ریپو چیز دیگری است (مثلاً "site")، base را به "/site/" تغییر بده.
 export default defineConfig({
-	site: "https://amhasani2a.github.io",
+	site: "https://jobinhasani.ir",
 	base: "/",
 	trailingSlash: "ignore",
 	integrations: [tailwind({ applyBaseStyles: false }), sitemap()],
