@@ -1,9 +1,10 @@
 ---
-import Base from "../../layouts/Base.astro"
-import Repos from "../../components/Repos.astro"
-import { t, type Lang } from "../../i18n/ui"
+import Base from "../../../layouts/Base.astro"
+import FeaturedProjects from "../../../components/FeaturedProjects.astro"
+import Repos from "../../../components/Repos.astro"
+import { t, type Lang } from "../../../i18n/ui"
 
-const lang: Lang = "fa"
+const lang: Lang = "en"
 const tr = t(lang)
 ---
 
@@ -13,6 +14,7 @@ const tr = t(lang)
 		<h1 class="reveal font-display text-3xl font-bold md:text-5xl">{tr("section.projects")}</h1>
 		<p class="reveal mt-3 max-w-prose text-muted">{tr("projects.subtitle")}</p>
 		<div class="mt-10">
+			<FeaturedProjects lang={lang} />
 			<Repos lang={lang} limit={30} />
 		</div>
 	</div>
