@@ -34,6 +34,29 @@ collections:
           - { name: email, label: ایمیل, widget: string }
           - { name: newsletterAction, label: آدرس فرم خبرنامه, widget: string, required: false }
           - { name: maxRepos, label: تعداد پروژه در صفحه, widget: number, default: 9 }
+          - { name: articlesFeed, label: آدرس فید RSS مقاله‌ها, widget: string, required: false }
+          - { name: articlesSiteFa, label: نام سایت مقاله‌ها (فارسی), widget: string, required: false }
+          - { name: articlesSiteEn, label: نام سایت مقاله‌ها (انگلیسی), widget: string, required: false }
+          - name: excludeRepos
+            label: مخازنی که نمایش داده نشوند
+            widget: list
+            required: false
+            field: { name: repo, label: نام مخزن, widget: string }
+          - name: featuredProjects
+            label: پروژه‌های شاخص
+            widget: list
+            required: false
+            fields:
+              - { name: name, label: عنوان, widget: string }
+              - { name: label, label: نشانی نمایشی, widget: string }
+              - { name: url, label: لینک, widget: string }
+              - { name: descriptionFa, label: توضیح فارسی, widget: text }
+              - { name: descriptionEn, label: توضیح انگلیسی, widget: text }
+              - name: tags
+                label: برچسب‌ها
+                widget: list
+                required: false
+                field: { name: tag, label: برچسب, widget: string }
           - name: pinnedRepos
             label: پروژه‌های مهم (اول نمایش داده می‌شوند)
             widget: list
@@ -133,42 +156,3 @@ collections:
         field: { name: tag, label: Tag, widget: string }
       - { name: draft, label: Draft, widget: boolean, default: false }
       - { name: body, label: Body, widget: markdown }
-
-  # -------- آثار ادبی --------
-  - name: books_fa
-    label: رمان‌ها و آثار (فارسی)
-    label_singular: اثر
-    folder: src/content/books/fa
-    create: true
-    extension: md
-    format: frontmatter
-    fields:
-      - { name: title, label: عنوان, widget: string }
-      - { name: subtitle, label: زیرعنوان, widget: string, required: false }
-      - { name: year, label: سال, widget: string, required: false }
-      - { name: kind, label: نوع (رمان/داستان/مجله), widget: string, required: false }
-      - { name: status, label: وضعیت, widget: string, required: false }
-      - { name: cover, label: جلد, widget: image, required: false }
-      - { name: link, label: لینک خرید/مطالعه, widget: string, required: false }
-      - { name: lang, label: زبان, widget: hidden, default: fa }
-      - { name: draft, label: پیش‌نویس, widget: boolean, default: false }
-      - { name: body, label: توضیح, widget: markdown }
-
-  - name: books_en
-    label: Books & works (English)
-    label_singular: Work
-    folder: src/content/books/en
-    create: true
-    extension: md
-    format: frontmatter
-    fields:
-      - { name: title, label: Title, widget: string }
-      - { name: subtitle, label: Subtitle, widget: string, required: false }
-      - { name: year, label: Year, widget: string, required: false }
-      - { name: kind, label: Type, widget: string, required: false }
-      - { name: status, label: Status, widget: string, required: false }
-      - { name: cover, label: Cover, widget: image, required: false }
-      - { name: link, label: Link, widget: string, required: false }
-      - { name: lang, label: Language, widget: hidden, default: en }
-      - { name: draft, label: Draft, widget: boolean, default: false }
-      - { name: body, label: Description, widget: markdown }
