@@ -4,17 +4,19 @@ import Hero from "../../components/Hero.astro"
 import Section from "../../components/Section.astro"
 import About from "../../components/About.astro"
 import Experience from "../../components/Experience.astro"
+import FeaturedProjects from "../../components/FeaturedProjects.astro"
 import Repos from "../../components/Repos.astro"
 import PostCard from "../../components/PostCard.astro"
-import BookCard from "../../components/BookCard.astro"
+import ArticleCard from "../../components/ArticleCard.astro"
 import Contact from "../../components/Contact.astro"
 import { t, localePath, type Lang } from "../../i18n/ui"
-import { getPosts, getBooks, cleanSlug, readingMinutes } from "../../lib/content"
+import { getPosts, cleanSlug, readingMinutes } from "../../lib/content"
+import { getArticles } from "../../lib/articles"
 
 const lang: Lang = "en"
 const tr = t(lang)
 const posts = (await getPosts(lang)).slice(0, 3)
-const books = (await getBooks(lang)).slice(0, 4)
+const articles = (await getArticles(6)).slice(0, 3)
 ---
 
 <Base lang={lang} path="/">
@@ -36,12 +38,42 @@ const books = (await getBooks(lang)).slice(0, 4)
 		href={localePath(lang, "/projects")}
 		hrefLabel={tr("cta.viewAll")}
 	>
+		<FeaturedProjects lang={lang} />
 		<Repos lang={lang} limit={6} />
 	</Section>
 
 	<Section
-		id="blog"
+		id="articles"
 		eyebrow="04"
+		title={tr("section.articles")}
+		subtitle={tr("articles.subtitle")}
+		href={localePath(lang, "/articles")}
+		hrefLabel={tr("cta.viewAll")}
+	>
+		{
+			articles.length ? (
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+					{articles.map((article) => (
+						<ArticleCard
+							lang={lang}
+							title={article.title}
+							link={article.link}
+							date={article.date}
+							excerpt={article.excerpt}
+							image={article.image}
+							categories={article.categories}
+						/>
+					))}
+				</div>
+			) : (
+				<p class="text-sm text-muted">{tr("articles.empty")}</p>
+			)
+		}
+	</Section>
+
+	<Section
+		id="blog"
+		eyebrow="05"
 		title={tr("section.blog")}
 		href={localePath(lang, "/blog")}
 		hrefLabel={tr("cta.viewAll")}
@@ -64,36 +96,6 @@ const books = (await getBooks(lang)).slice(0, 4)
 				</div>
 			) : (
 				<p class="text-sm text-muted">{tr("blog.empty")}</p>
-			)
-		}
-	</Section>
-
-	<Section
-		id="books"
-		eyebrow="05"
-		title={tr("section.books")}
-		href={localePath(lang, "/books")}
-		hrefLabel={tr("cta.viewAll")}
-	>
-		{
-			books.length ? (
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-					{books.map((book) => (
-						<BookCard
-							lang={lang}
-							title={book.data.title}
-							subtitle={book.data.subtitle}
-							year={book.data.year}
-							kind={book.data.kind}
-							status={book.data.status}
-							cover={book.data.cover}
-							link={book.data.link}
-							body={book.body}
-						/>
-					))}
-				</div>
-			) : (
-				<p class="text-sm text-muted">{tr("books.empty")}</p>
 			)
 		}
 	</Section>
