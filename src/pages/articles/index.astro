@@ -1,1 +1,41 @@
+---
+import Base from "../../layouts/Base.astro"
+import ArticleCard from "../../components/ArticleCard.astro"
+import { t, type Lang } from "../../i18n/ui"
+import { getArticles, articlesSource } from "../../lib/articles"
 
+const lang: Lang = "fa"
+const tr = t(lang)
+const articles = await getArticles(24)
+const source = articlesSource(lang)
+---
+
+<Base lang={lang} path="/articles" title={tr("nav.articles")}>
+	<div class="wrap py-14 md:py-20">
+		<p class="reveal eyebrow mb-3">{tr("nav.articles")}</p>
+		<h1 class="reveal font-display text-3xl font-bold md:text-5xl">{tr("section.articles")}</h1>
+		<p class="reveal mt-3 max-w-prose text-muted">
+			{tr("articles.subtitle")}
+			{source && <span>{" \u00b7 "}{tr("articles.source")} {source}</span>}
+		</p>
+		{
+			articles.length ? (
+				<div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{articles.map((article) => (
+						<ArticleCard
+							lang={lang}
+							title={article.title}
+							link={article.link}
+							date={article.date}
+							excerpt={article.excerpt}
+							image={article.image}
+							categories={article.categories}
+						/>
+					))}
+				</div>
+			) : (
+				<p class="mt-10 text-sm text-muted">{tr("articles.empty")}</p>
+			)
+		}
+	</div>
+</Base>
