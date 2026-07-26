@@ -16,6 +16,7 @@ const user = settings.githubUsername
 	data-user={user}
 	data-limit={String(limit)}
 	data-pinned={JSON.stringify(settings.pinnedRepos)}
+	data-exclude={JSON.stringify(settings.excludeRepos ?? [])}
 	data-lang={lang}
 	data-label-stars={tr("projects.stars")}
 	data-label-updated={tr("projects.updated")}
@@ -114,12 +115,17 @@ const user = settings.githubUsername
 		const user = root.dataset.user!
 		const limit = Number(root.dataset.limit || 9)
 		const pinned: string[] = JSON.parse(root.dataset.pinned || "[]")
+		const exclude: string[] = JSON.parse(root.dataset.exclude || "[]").map((name: string) =>
+			String(name).toLowerCase(),
+		)
 		const locale = root.dataset.lang === "fa" ? "fa-IR" : "en-US"
 		const labels = { stars: root.dataset.labelStars!, updated: root.dataset.labelUpdated! }
 
 		try {
 			const all = await fetchRepos(user)
-			const visible = all.filter((r) => !r.fork && !r.archived)
+			const visible = all.filter(
+				(r) => !r.fork && !r.archived && !exclude.includes(String(r.name).toLowerCase()),
+			)
 			const sorted = visible.sort((a, b) => {
 				const pa = pinned.indexOf(a.name)
 				const pb = pinned.indexOf(b.name)
@@ -132,15 +138,15 @@ const user = settings.githubUsername
 				? list.map((r) => card(r, labels, locale)).join("")
 				: `<p class="text-sm text-muted">${root.dataset.labelError}</p>`
 		} catch (err) {
+			const profileUrl = "https://" + "github.com/" + user
 			root.innerHTML = `<div class="card p-5 text-sm text-muted sm:col-span-2 lg:col-span-3">
 				${root.dataset.labelError}
-				<a class="text-accent underline" target="_blank" rel="noopener" href="https://github.com/${user}">github.com/${user}</a>
+				<a class="text-accent underline" target="_blank" rel="noopener" href="${profileUrl}">github.com/${esc(user)}</a>
 			</div>`
 		}
 	}
 
 	document.querySelectorAll<HTMLElement>("[data-repos]").forEach((root) => {
-		// lazy: only fetch when the section approaches the viewport
 		const io = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
