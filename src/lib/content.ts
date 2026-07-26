@@ -21,10 +21,3 @@ export async function getPosts(lang: Lang): Promise<CollectionEntry<"blog">[]> {
 		.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 }
 
-export async function getBooks(lang: Lang): Promise<CollectionEntry<"books">[]> {
-	const all = await getCollection("books")
-	return all
-		.filter((entry) => (entry.data.lang ?? "fa") === lang)
-		.filter((entry) => !(isProd && entry.data.draft))
-		.sort((a, b) => String(b.data.year).localeCompare(String(a.data.year)))
-}
