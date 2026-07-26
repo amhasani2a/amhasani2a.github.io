@@ -1,13 +1,46 @@
 {
   "githubUsername": "amhasani2a",
-  "email": "saiid9104@gmail.com",
+  "email": "hello@example.com",
   "newsletterAction": "",
   "pinnedRepos": [],
+  "excludeRepos": [
+    "amhasani2a.github.io",
+    "Portfolio"
+  ],
   "maxRepos": 9,
+  "articlesFeed": "https://faragomancb.ir/feed/author/1",
+  "articlesSiteFa": "فراگومان",
+  "articlesSiteEn": "Faragoman",
+  "featuredProjects": [
+    {
+      "name": "فراگومان",
+      "label": "faragomancb.ir",
+      "url": "https://faragomancb.ir",
+      "descriptionFa": "مجله‌ی آنلاینی که خودم طراحی، پیاده‌سازی و مدیریت می‌کنم؛ بستر انتشار مقاله‌ها و پرونده‌های ادبی.",
+      "descriptionEn": "An online magazine I designed, built and run; home to my articles and literary features.",
+      "tags": [
+        "WordPress",
+        "PHP",
+        "SEO"
+      ]
+    }
+  ],
   "social": [
-    { "label": "GitHub", "url": "https://github.com/amhasani2a" },
-    { "label": "Telegram", "url": "https://t.me/eots1" },
-    { "label": "X", "url": "https://x.com/" },
-    { "label": "LinkedIn", "url": "https://www.linkedin.com/" }
+    {
+      "label": "GitHub",
+      "url": "https://github.com/amhasani2a"
+    },
+    {
+      "label": "Telegram",
+      "url": "https://t.me/"
+    },
+    {
+      "label": "X",
+      "url": "https://x.com/"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/"
+    }
   ]
 }
