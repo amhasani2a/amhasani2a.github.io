@@ -9,17 +9,17 @@
   ],
   "maxRepos": 9,
   "articlesFeed": "https://faragomancb.ir/feed/author/1",
-  "articlesSiteFa": "فراگومان",
+  "articlesSiteFa": "فراگمان",
   "articlesSiteEn": "Faragoman",
   "featuredProjects": [
     {
-      "name": "فراگومان",
+      "name": "فراگمان",
       "label": "faragomancb.ir",
       "url": "https://faragomancb.ir",
       "descriptionFa": "مجله‌ی آنلاینی که خودم طراحی، پیاده‌سازی و مدیریت می‌کنم؛ بستر انتشار مقاله‌ها و پرونده‌های ادبی.",
       "descriptionEn": "An online magazine I designed, built and run; home to my articles and literary features.",
       "tags": [
-        "WordPress",
+        "php ",
         "PHP",
         "SEO"
       ]
