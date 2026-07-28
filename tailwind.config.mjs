@@ -8,8 +8,8 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ["Vazirmatn", "Inter", "system-ui", "sans-serif"],
-				display: ["Vazirmatn", "Inter", "system-ui", "sans-serif"],
-				mono: ["Menlo", "Consolas", "monospace"],
+				display: ["Fraunces", "Vazirmatn", "Georgia", "serif"],
+				mono: ["JetBrains Mono", "Menlo", "Consolas", "monospace"],
 			},
 			colors: {
 				canvas: "rgb(var(--c-canvas) / <alpha-value>)",
@@ -19,9 +19,10 @@ export default {
 				ink: "rgb(var(--c-text) / <alpha-value>)",
 				muted: "rgb(var(--c-muted) / <alpha-value>)",
 				accent: "rgb(var(--c-accent) / <alpha-value>)",
+				sage: "rgb(var(--c-accent-2) / <alpha-value>)",
 			},
-			maxWidth: { content: "1120px", prose: "720px" },
-			borderRadius: { xl: "12px" },
+			maxWidth: { content: "1180px", prose: "720px" },
+			borderRadius: { xl: "14px" },
 		},
 	},
 	plugins: [typography],
