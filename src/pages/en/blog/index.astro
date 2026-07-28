@@ -10,11 +10,11 @@ const posts = await getPosts(lang)
 ---
 
 <Base lang={lang} path="/blog" title={tr("nav.blog")}>
-	<div class="wrap py-14 md:py-20">
+	<div class="wrap py-16 md:py-24">
 		<p class="reveal eyebrow mb-3">{tr("nav.blog")}</p>
-		<h1 class="reveal font-display text-3xl font-bold md:text-5xl">{tr("section.blog")}</h1>
+		<h1 class="reveal h-display">{tr("section.blog")}</h1>
 
-		<div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+		<div class="grid-cards mt-12">
 			{
 				posts.map((post) => (
 					<PostCard
