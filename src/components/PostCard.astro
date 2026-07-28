@@ -16,10 +16,10 @@ const tr = t(lang)
 const href = localePath(lang, `/blog/${slug}`)
 ---
 
-<article class="reveal card card-hover group overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+<article class="reveal card card-hover card-rule group h-full overflow-hidden">
 	<a href={href} class="flex h-full flex-col">
 		{
-			cover && (
+			cover ? (
 				<img
 					src={cover}
 					alt=""
@@ -27,17 +27,21 @@ const href = localePath(lang, `/blog/${slug}`)
 					decoding="async"
 					width="640"
 					height="360"
-					class="h-44 w-full border-b border-line object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+					class="card-media"
 				/>
+			) : (
+				<div class="card-media-fallback" aria-hidden="true">
+					“”
+				</div>
 			)
 		}
 		<div class="flex flex-1 flex-col p-6">
-			<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
+			<div class="mono flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted">
 				<time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
 				{minutes && <span>· {minutes} {tr("blog.min")}</span>}
 			</div>
-			<h3 class="mt-3 font-display text-lg font-bold transition-colors group-hover:text-accent">{title}</h3>
-			{description && <p class="mt-2 line-clamp-3 flex-1 text-sm leading-7 text-muted">{description}</p>}
+			<h3 class="serif mt-3 text-lg font-semibold leading-8 transition-colors group-hover:text-accent">{title}</h3>
+			{description && <p class="clamp-3 mt-2 flex-1 text-sm leading-7 text-muted">{description}</p>}
 			{
 				tags.length > 0 && (
 					<div class="mt-5 flex flex-wrap gap-2">

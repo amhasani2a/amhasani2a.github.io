@@ -13,7 +13,7 @@ interface Props {
 const { lang, title, link, date, excerpt, image, categories = [] } = Astro.props
 ---
 
-<article class="reveal card card-hover group overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+<article class="reveal card card-hover card-rule group h-full overflow-hidden">
 	<a href={link} target="_blank" rel="noopener noreferrer" class="flex h-full flex-col">
 		{
 			image ? (
@@ -25,23 +25,20 @@ const { lang, title, link, date, excerpt, image, categories = [] } = Astro.props
 					width="640"
 					height="360"
 					referrerpolicy="no-referrer"
-					class="h-44 w-full border-b border-line bg-raised/60 object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+					class="card-media"
 				/>
 			) : (
-				<div
-					class="grid h-44 w-full place-items-center border-b border-line bg-raised/60 text-3xl"
-					aria-hidden="true"
-				>
-					✍️
+				<div class="card-media-fallback" aria-hidden="true">
+					Aa
 				</div>
 			)
 		}
 		<div class="flex flex-1 flex-col p-6">
-			<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
+			<div class="mono flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted">
 				<time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
 			</div>
-			<h3 class="mt-3 font-display text-lg font-bold leading-8 transition-colors group-hover:text-accent">{title}</h3>
-			{excerpt && <p class="mt-2 line-clamp-3 flex-1 text-sm leading-7 text-muted">{excerpt}</p>}
+			<h3 class="serif mt-3 text-lg font-semibold leading-8 transition-colors group-hover:text-accent">{title}</h3>
+			{excerpt && <p class="clamp-3 mt-2 flex-1 text-sm leading-7 text-muted">{excerpt}</p>}
 			{
 				categories.length > 0 && (
 					<div class="mt-5 flex flex-wrap gap-2">

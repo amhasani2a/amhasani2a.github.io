@@ -10,41 +10,61 @@ interface Props {
 const { lang } = Astro.props
 const tr = t(lang)
 const profile = lang === "en" ? profileEn : profileFa
+const marquee = profile.skills.flatMap((g) => g.items)
 ---
 
-<section class="aurora relative isolate overflow-hidden pt-16 md:pt-24">
+<section class="hero">
 	<div class="wrap">
-		<p class="reveal eyebrow mb-4">{profile.tagline}</p>
-		<h1 class="reveal h-display max-w-[18ch]">{profile.heroTitle}</h1>
-		<p class="reveal mt-6 max-w-prose text-lg text-muted">{profile.heroSubtitle}</p>
+		<p class="reveal eyebrow mb-6">{profile.tagline}</p>
+		<h1 class="reveal h-display max-w-[16ch]">{profile.heroTitle}</h1>
 
-		<div class="reveal mt-8 flex flex-wrap items-center gap-3">
-			<a href={localePath(lang, "/projects")} class="btn btn-primary">{tr("nav.projects")}</a>
-			<a href={localePath(lang, "/blog")} class="btn">{tr("nav.blog")}</a>
-			<a
-				href={"https://" + "github.com/" + settings.githubUsername}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn">GitHub ↗</a
-			>
+		<div class="reveal mt-8 grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+			<p class="lede">{profile.heroSubtitle}</p>
+			<div class="flex flex-wrap items-center gap-3">
+				<a href={localePath(lang, "/projects")} class="btn btn-primary">{tr("nav.projects")}</a>
+				<a href={localePath(lang, "/blog")} class="btn">{tr("nav.blog")}</a>
+				<a
+					href={"https://" + "github.com/" + settings.githubUsername}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="btn btn-ghost">GitHub ↗</a
+				>
+			</div>
 		</div>
 
-		<dl class="reveal mt-12 grid grid-cols-1 gap-3 sm:grid-cols-3">
-			<div class="card p-5">
+		<dl class="reveal hero-meta mt-14">
+			<div>
 				<dt class="eyebrow">{lang === "fa" ? "نقش" : "Role"}</dt>
 				<dd class="mt-2 text-sm">{profile.role}</dd>
 			</div>
-			<div class="card p-5">
+			<div>
 				<dt class="eyebrow">{lang === "fa" ? "مکان" : "Location"}</dt>
 				<dd class="mt-2 text-sm">{profile.location}</dd>
 			</div>
-			<div class="card p-5">
+			<div>
 				<dt class="eyebrow">{lang === "fa" ? "وضعیت" : "Status"}</dt>
 				<dd class="mt-2 flex items-center gap-2 text-sm">
-					<span class="h-2 w-2 rounded-full bg-[#72BC8F]" aria-hidden="true"></span>
+					<span class="status-dot" aria-hidden="true"></span>
 					{profile.availability}
 				</dd>
 			</div>
 		</dl>
 	</div>
 </section>
+
+<div class="ticker" aria-hidden="true">
+	<div class="ticker-track">
+		{
+			[0, 1].map(() => (
+				<div class="flex items-center gap-10">
+					{marquee.map((item) => (
+						<span class="ticker-item">
+							<span aria-hidden="true">✦</span>
+							<span>{item}</span>
+						</span>
+					))}
+				</div>
+			))
+		}
+	</div>
+</div>

@@ -21,25 +21,20 @@ const nav = [
 	{ href: localePath(lang, "/#contact"), label: tr("nav.contact") },
 ]
 const initials = profile.name.trim().charAt(0)
+const current = (href: string) => href !== "/" && !href.includes("#") && path.startsWith(href.replace("/en", "") || "/")
 ---
 
-<header class="sticky top-0 z-40 border-b border-line/70 bg-canvas/80 backdrop-blur-md">
-	<div class="wrap flex h-16 items-center justify-between gap-4">
-		<a href={localePath(lang, "/")} class="flex items-center gap-2.5 font-display text-sm font-bold">
-			<span
-				class="grid h-8 w-8 place-items-center rounded-xl bg-accent text-[13px] font-bold text-white"
-				aria-hidden="true">{initials}</span
-			>
-			<span class="hidden sm:inline">{profile.name}</span>
+<header class="site-header">
+	<div class="wrap flex h-[68px] items-center justify-between gap-4">
+		<a href={localePath(lang, "/")} class="brand">
+			<span class="brand-mark" aria-hidden="true">{initials}</span>
+			<span class="brand-name hidden sm:inline">{profile.name}</span>
 		</a>
 
-		<nav class="hidden items-center gap-1 md:flex" aria-label="Main">
+		<nav class="nav-pill" aria-label="Main">
 			{
 				nav.map((item) => (
-					<a
-						href={item.href}
-						class="rounded-xl px-3 py-2 text-sm text-muted transition-colors duration-200 hover:bg-raised hover:text-ink"
-					>
+					<a href={item.href} class="nav-link" aria-current={current(item.href) ? "page" : undefined}>
 						{item.label}
 					</a>
 				))
@@ -49,29 +44,17 @@ const initials = profile.name.trim().charAt(0)
 		<div class="flex items-center gap-2">
 			<a
 				href={localePath(other, path)}
-				class="rounded-xl border border-line px-3 py-2 text-xs font-medium text-muted transition-colors hover:border-accent/50 hover:text-ink"
+				class="icon-btn mono text-[11px] font-medium"
 				hreflang={other}
 				aria-label={other === "en" ? "Switch to English" : "تغییر به فارسی"}
 				>{other === "en" ? "EN" : "FA"}</a
 			>
-			<button
-				type="button"
-				data-theme-toggle
-				class="grid h-10 w-10 place-items-center rounded-xl border border-line text-muted transition-colors hover:border-accent/50 hover:text-ink"
-				aria-label={tr("theme")}
-				title={tr("theme")}
-			>
+			<button type="button" data-theme-toggle class="icon-btn" aria-label={tr("theme")} title={tr("theme")}>
 				<svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
 					<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"></path>
 				</svg>
 			</button>
-			<button
-				type="button"
-				data-menu-toggle
-				class="grid h-10 w-10 place-items-center rounded-xl border border-line text-muted md:hidden"
-				aria-label="Menu"
-				aria-expanded="false"
-			>
+			<button type="button" data-menu-toggle class="icon-btn menu-btn" aria-label="Menu" aria-expanded="false">
 				<svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 					<path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"></path>
 				</svg>
@@ -79,15 +62,9 @@ const initials = profile.name.trim().charAt(0)
 		</div>
 	</div>
 
-	<div data-mobile-menu class="hidden border-t border-line bg-canvas md:hidden">
+	<div data-mobile-menu class="mobile-menu hidden">
 		<nav class="wrap flex flex-col py-3" aria-label="Mobile">
-			{
-				nav.map((item) => (
-					<a href={item.href} class="rounded-xl px-3 py-3 text-sm text-muted hover:bg-raised hover:text-ink">
-						{item.label}
-					</a>
-				))
-			}
+			{nav.map((item) => <a href={item.href} class="mobile-link">{item.label}</a>)}
 		</nav>
 	</div>
 </header>

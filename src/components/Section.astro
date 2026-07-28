@@ -6,21 +6,22 @@ interface Props {
 	subtitle?: string
 	href?: string
 	hrefLabel?: string
+	index?: string
 }
-const { id, eyebrow, title, subtitle, href, hrefLabel } = Astro.props
+const { id, eyebrow, title, subtitle, href, hrefLabel, index } = Astro.props
 ---
 
-<section id={id} class="py-16 md:py-24">
+<section id={id} class="section">
 	<div class="wrap">
-		<div class="reveal mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-12">
-			<div class="max-w-prose">
-				{eyebrow && <p class="eyebrow mb-2">{eyebrow}</p>}
+		<div class="reveal section-head">
+			<div class="max-w-[54ch]">
+				{(index || eyebrow) && <p class="section-index mb-3">{index ? index + " ——" : eyebrow}</p>}
 				<h2 class="h-section">{title}</h2>
-				{subtitle && <p class="mt-2 text-muted">{subtitle}</p>}
+				{subtitle && <p class="mt-3 text-sm text-muted">{subtitle}</p>}
 			</div>
 			{
 				href && hrefLabel && (
-					<a href={href} class="btn text-muted hover:text-ink">
+					<a href={href} class="btn btn-ghost">
 						{hrefLabel}
 						<span aria-hidden="true">→</span>
 					</a>

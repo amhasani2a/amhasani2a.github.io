@@ -13,32 +13,22 @@ const profile = lang === "en" ? profileEn : profileFa
 const year = new Date().getFullYear()
 ---
 
-<footer class="mt-24 border-t border-line py-10">
-	<div class="wrap flex flex-col items-center justify-between gap-6 md:flex-row">
-		<p class="text-sm text-muted">© {year} {profile.name} — {tr("footer.rights")}</p>
-		<div class="flex flex-wrap items-center justify-center gap-2">
-			{
-				settings.social.map((s) => (
-					<a
-						href={s.url}
-						target="_blank"
-						rel="noopener noreferrer me"
-						class="rounded-xl border border-line px-3 py-2 text-xs text-muted transition-colors hover:border-accent/50 hover:text-ink"
-					>
-						{s.label}
-					</a>
-				))
-			}
-			<a
-				href={`${import.meta.env.BASE_URL}rss.xml`}
-				class="rounded-xl border border-line px-3 py-2 text-xs text-muted transition-colors hover:border-accent/50 hover:text-ink"
-				>RSS</a
-			>
-			<a
-				href={localePath(lang, "/blog")}
-				class="rounded-xl border border-line px-3 py-2 text-xs text-muted transition-colors hover:border-accent/50 hover:text-ink"
-				>{tr("nav.blog")}</a
-			>
+<footer class="site-footer">
+	<div class="wrap">
+		<p class="footer-word" aria-hidden="true">{profile.name}</p>
+		<div class="mt-10 flex flex-col items-start justify-between gap-6 border-t border-line pt-8 md:flex-row md:items-center">
+			<p class="mono text-xs text-muted">© {year} {profile.name} — {tr("footer.rights")}</p>
+			<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+				{
+					settings.social.map((s) => (
+						<a href={s.url} target="_blank" rel="noopener noreferrer me" class="footer-link">
+							{s.label}
+						</a>
+					))
+				}
+				<a href={`${import.meta.env.BASE_URL}rss.xml`} class="footer-link">RSS</a>
+				<a href={localePath(lang, "/blog")} class="footer-link">{tr("nav.blog")}</a>
+			</div>
 		</div>
 	</div>
 </footer>
