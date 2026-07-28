@@ -52,7 +52,7 @@ const articles = (await getArticles(6)).slice(0, 3)
 	>
 		{
 			articles.length ? (
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+				<div class="grid-cards">
 					{articles.map((article) => (
 						<ArticleCard
 							lang={lang}
@@ -80,7 +80,7 @@ const articles = (await getArticles(6)).slice(0, 3)
 	>
 		{
 			posts.length ? (
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+				<div class="grid-cards">
 					{posts.map((post) => (
 						<PostCard
 							lang={lang}
