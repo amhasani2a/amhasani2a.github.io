@@ -15,14 +15,14 @@ const marquee = profile.skills.flatMap((g) => g.items)
 
 <section class="hero">
 	<div class="wrap">
-		<p class="reveal eyebrow mb-6">{profile.tagline}</p>
-		<h1 class="reveal h-display max-w-[16ch]">{profile.heroTitle}</h1>
+		<p class="eyebrow mb-6">{profile.tagline}</p>
+		<h1 class="h-display max-w-[16ch]">{profile.heroTitle}</h1>
 
-		<div class="reveal mt-8 grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+		<div class="mt-8 grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
 			<p class="lede">{profile.heroSubtitle}</p>
 			<div class="flex flex-wrap items-center gap-3">
-				<a href={localePath(lang, "/projects")} class="btn btn-primary">{tr("nav.projects")}</a>
-				<a href={localePath(lang, "/blog")} class="btn">{tr("nav.blog")}</a>
+				<a href={localePath(lang, "/articles")} class="btn btn-primary">{tr("nav.articles")}</a>
+				<a href={localePath(lang, "/projects")} class="btn">{tr("nav.projects")}</a>
 				<a
 					href={"https://" + "github.com/" + settings.githubUsername}
 					target="_blank"

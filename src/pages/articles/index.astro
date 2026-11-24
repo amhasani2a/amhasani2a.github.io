@@ -6,8 +6,14 @@ import { getArticles, articlesSource } from "../../lib/articles"
 
 const lang: Lang = "fa"
 const tr = t(lang)
-const articles = await getArticles(24)
+const articles = await getArticles(30)
 const source = articlesSource(lang)
+
+const counts = new Map<string, number>()
+for (const a of articles) {
+	for (const c of a.categories) counts.set(c, (counts.get(c) ?? 0) + 1)
+}
+const categories = [...counts.entries()].sort((a, b) => b[1] - a[1])
 ---
 
 <Base lang={lang} path="/articles" title={tr("nav.articles")}>
@@ -19,8 +25,22 @@ const source = articlesSource(lang)
 			{source && <span>{" \u00b7 "}{tr("articles.source")} {source}</span>}
 		</p>
 		{
+			categories.length > 1 && (
+				<div class="reveal mt-8 flex flex-wrap gap-2" role="group" aria-label="فیلتر دسته‌بندی" data-article-filters>
+					<button type="button" class="chip chip-filter" data-filter="all" aria-pressed="true">
+						همه ({articles.length})
+					</button>
+					{categories.map(([cat, count]) => (
+						<button type="button" class="chip chip-filter" data-filter={cat} aria-pressed="false">
+							{cat} ({count})
+						</button>
+					))}
+				</div>
+			)
+		}
+		{
 			articles.length ? (
-				<div class="grid-cards mt-12">
+				<div class="grid-cards mt-10">
 					{articles.map((article) => (
 						<ArticleCard
 							lang={lang}
@@ -39,3 +59,22 @@ const source = articlesSource(lang)
 		}
 	</div>
 </Base>
+
+<script>
+	const bar = document.querySelector("[data-article-filters]")
+	const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-article-card]"))
+	bar?.addEventListener("click", (e) => {
+		const btn = e.target instanceof Element ? e.target.closest<HTMLButtonElement>("[data-filter]") : null
+		if (!btn) return
+		const selected = btn.dataset.filter || "all"
+		bar.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((b) => {
+			b.setAttribute("aria-pressed", String(b === btn))
+		})
+		cards.forEach((card) => {
+			const cats: string[] = JSON.parse(card.dataset.categories || "[]")
+			const match = selected === "all" || cats.includes(selected)
+			card.classList.toggle("hidden", !match)
+			if (match) card.classList.add("is-visible")
+		})
+	})
+</script>

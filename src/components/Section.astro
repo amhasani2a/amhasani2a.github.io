@@ -23,7 +23,7 @@ const { id, eyebrow, title, subtitle, href, hrefLabel, index } = Astro.props
 				href && hrefLabel && (
 					<a href={href} class="btn btn-ghost">
 						{hrefLabel}
-						<span aria-hidden="true">→</span>
+						<span class="inline-block rtl:rotate-180" aria-hidden="true">→</span>
 					</a>
 				)
 			}

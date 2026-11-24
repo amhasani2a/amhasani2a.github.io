@@ -56,6 +56,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://example.com
 				} catch (e) {}
 			})()
 		</script>
+		<noscript>
+			<style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+		</noscript>
 	</head>
 	<body class="min-h-screen selection:text-ink">
 		<a

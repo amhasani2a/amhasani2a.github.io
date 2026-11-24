@@ -16,7 +16,7 @@ const { Content } = await post.render()
 
 <Base lang={lang} path={`/blog/${cleanSlug(post.slug)}`} title={post.data.title} description={post.data.description}>
 	<article class="wrap py-16 md:py-24">
-		<a href={localePath(lang, "/blog")} class="text-sm text-muted hover:text-ink">← {tr("nav.blog")}</a>
+		<a href={localePath(lang, "/blog")} class="text-sm text-muted hover:text-ink">→ {tr("nav.blog")}</a>
 		<header class="mx-auto mt-6 max-w-prose">
 			<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
 				<time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time>

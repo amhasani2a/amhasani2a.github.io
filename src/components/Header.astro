@@ -50,7 +50,11 @@ const current = (href: string) => href !== "/" && !href.includes("#") && path.st
 				>{other === "en" ? "EN" : "FA"}</a
 			>
 			<button type="button" data-theme-toggle class="icon-btn" aria-label={tr("theme")} title={tr("theme")}>
-				<svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+				<svg class="icon-sun h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+					<circle cx="12" cy="12" r="4"></circle>
+					<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke-linecap="round"></path>
+				</svg>
+				<svg class="icon-moon h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
 					<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"></path>
 				</svg>
 			</button>
@@ -64,7 +68,13 @@ const current = (href: string) => href !== "/" && !href.includes("#") && path.st
 
 	<div data-mobile-menu class="mobile-menu hidden">
 		<nav class="wrap flex flex-col py-3" aria-label="Mobile">
-			{nav.map((item) => <a href={item.href} class="mobile-link">{item.label}</a>)}
+			{
+				nav.map((item) => (
+					<a href={item.href} class="mobile-link" aria-current={current(item.href) ? "page" : undefined}>
+						{item.label}
+					</a>
+				))
+			}
 		</nav>
 	</div>
 </header>
@@ -72,9 +82,16 @@ const current = (href: string) => href !== "/" && !href.includes("#") && path.st
 <script>
 	const toggle = document.querySelector("[data-menu-toggle]")
 	const menu = document.querySelector("[data-mobile-menu]")
+	const close = () => {
+		menu?.classList.add("hidden")
+		toggle?.setAttribute("aria-expanded", "false")
+	}
 	toggle?.addEventListener("click", () => {
 		const open = menu?.classList.toggle("hidden") === false
 		toggle.setAttribute("aria-expanded", String(open))
 	})
-	menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.add("hidden")))
+	menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", close))
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") close()
+	})
 </script>
