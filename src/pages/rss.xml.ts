@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss"
 import type { APIContext } from "astro"
 import { getCollection } from "astro:content"
+import profileFa from "../data/profile.fa.json"
 
 export const prerender = true
 
@@ -14,8 +15,8 @@ export async function GET(context: APIContext) {
 	const site = context.site ? context.site.toString() : "/"
 
 	return rss({
-		title: "امیرمحمد حسنی",
-		description: "نوشته‌هایی دربارهٔ روایت، نشر و توسعهٔ نرم‌افزار",
+		title: profileFa.name,
+		description: profileFa.heroSubtitle,
 		site,
 		items: posts.map((post) => ({
 			title: String(post.data.title ?? ""),

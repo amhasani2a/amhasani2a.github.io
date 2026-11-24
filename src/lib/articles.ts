@@ -11,8 +11,10 @@ export type Article = {
 }
 
 const FEED_TIMEOUT = 15000
+const FEED_ATTEMPTS = 2
 
 let cached: Article[] | null = null
+let pending: Promise<Article[]> | null = null
 
 function unwrap(input: string) {
 	return input.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
@@ -82,13 +84,17 @@ function shorten(input: string, max: number) {
 	return text.slice(0, max).replace(/\s+\S*$/, "") + "\u2026"
 }
 
-function parseFeed(xml: string): Article[] {
-	const blocks = xml.match(/<item[\s\S]*?<\/item>/gi) || []
+export function parseFeed(xml: string): Article[] {
+	const blocks = xml.match(/<(?:item|entry)(?:\s[^>]*)?>[\s\S]*?<\/(?:item|entry)>/gi) || []
 	return blocks
 		.map((block) => {
-			const content = readTag(block, "content:encoded")
-			const description = readTag(block, "description")
-			const raw = readTag(block, "pubDate") || readTag(block, "dc:date") || readTag(block, "updated")
+			const content = readTag(block, "content:encoded") || readTag(block, "content")
+			const description = readTag(block, "description") || readTag(block, "summary")
+			const raw =
+				readTag(block, "pubDate") ||
+				readTag(block, "dc:date") ||
+				readTag(block, "published") ||
+				readTag(block, "updated")
 			const parsed = raw ? new Date(raw) : new Date(Number.NaN)
 			const image =
 				readAttribute(block, "media:content", "url") ||
@@ -108,32 +114,53 @@ function parseFeed(xml: string): Article[] {
 		.sort((a, b) => b.date.valueOf() - a.date.valueOf())
 }
 
-export async function getArticles(limit = 24): Promise<Article[]> {
-	if (cached) return cached.slice(0, limit)
-	const feed = String(settings.articlesFeed || "")
-	if (!feed) return []
+async function fetchFeedOnce(feed: string): Promise<Article[]> {
 	const controller = new AbortController()
 	const timer = setTimeout(() => controller.abort(), FEED_TIMEOUT)
 	try {
 		const response = await fetch(feed, {
 			headers: {
-				Accept: "application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
+				Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
 				"User-Agent": "Mozilla/5.0 (compatible; PortfolioBuild/1.0)",
 			},
 			signal: controller.signal,
 		})
 		if (!response.ok) throw new Error("feed responded " + response.status)
-		const articles = parseFeed(await response.text())
-		cached = articles
-		console.log("[articles] loaded " + articles.length + " items from feed")
-		return articles.slice(0, limit)
-	} catch (error) {
-		const reason = error instanceof Error ? error.message : String(error)
-		console.warn("[articles] feed unavailable, section will be empty: " + reason)
-		return []
+		return parseFeed(await response.text())
 	} finally {
 		clearTimeout(timer)
 	}
+}
+
+async function loadArticles(feed: string): Promise<Article[]> {
+	let lastError: unknown
+	for (let attempt = 1; attempt <= FEED_ATTEMPTS; attempt++) {
+		try {
+			const articles = await fetchFeedOnce(feed)
+			console.log("[articles] loaded " + articles.length + " items from feed")
+			return articles
+		} catch (error) {
+			lastError = error
+			if (attempt < FEED_ATTEMPTS) await new Promise((r) => setTimeout(r, 1500))
+		}
+	}
+	const reason = lastError instanceof Error ? lastError.message : String(lastError)
+	console.warn("[articles] feed unavailable after " + FEED_ATTEMPTS + " attempts: " + reason)
+	return []
+}
+
+export async function getArticles(limit = 24): Promise<Article[]> {
+	if (cached) return cached.slice(0, limit)
+	const feed = String(settings.articlesFeed || "")
+	if (!feed) return []
+	if (!pending) {
+		pending = loadArticles(feed).then((articles) => {
+			cached = articles
+			pending = null
+			return articles
+		})
+	}
+	return (await pending).slice(0, limit)
 }
 
 export function articlesSource(lang: Lang) {

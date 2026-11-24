@@ -25,6 +25,6 @@
 | ایمیل، شبکه‌های اجتماعی، یوزرنیم گیت‌هاب | `src/data/settings.json` |
 | متن معرفی، رزومه، مهارت‌ها | `src/data/profile.fa.json` و `profile.en.json` |
 | پست‌های وبلاگ | `src/content/blog/fa` و `src/content/blog/en` |
-| رمان‌ها و آثار | `src/content/books/fa` و `en` |
+| فید RSS مقاله‌ها | `src/data/settings.json` (`articlesFeed`) و `src/lib/articles.ts` |
 | رنگ‌ها و استایل | `src/styles/global.css` (متغیرهای `--c-*`) |
 | متن منوها و دکمه‌ها | `src/i18n/ui.ts` |

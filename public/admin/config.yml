@@ -127,10 +127,10 @@ collections:
       - { name: lang, label: زبان, widget: hidden, default: fa }
       - { name: cover, label: تصویر کاور, widget: image, required: false }
       - name: tags
-        label: برچسپ‌ها
+        label: برچسب‌ها
         widget: list
         required: false
-        field: { name: tag, label: برچسپ, widget: string }
+        field: { name: tag, label: برچسب, widget: string }
       - { name: draft, label: پیش‌نویس (منتشر نشود), widget: boolean, default: false }
       - { name: body, label: متن, widget: markdown }
 

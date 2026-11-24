@@ -16,7 +16,7 @@ import { getArticles } from "../../lib/articles"
 const lang: Lang = "en"
 const tr = t(lang)
 const posts = (await getPosts(lang)).slice(0, 3)
-const articles = (await getArticles(6)).slice(0, 3)
+const articles = await getArticles(3)
 ---
 
 <Base lang={lang} path="/">

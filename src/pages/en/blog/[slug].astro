@@ -24,8 +24,28 @@ const { Content } = await post.render()
 			</div>
 			<h1 class="serif mt-4 text-3xl font-semibold leading-tight md:text-[42px]">{post.data.title}</h1>
 			{post.data.description && <p class="mt-4 text-lg text-muted">{post.data.description}</p>}
+			{
+				post.data.tags.length > 0 && (
+					<div class="mt-5 flex flex-wrap gap-2">
+						{post.data.tags.map((tag: string) => (
+							<span class="chip">#{tag}</span>
+						))}
+					</div>
+				)
+			}
 		</header>
-		<div class="prose prose-invert mx-auto mt-12 max-w-prose prose-a:text-accent">
+		{
+			post.data.cover && (
+				<img
+					src={post.data.cover}
+					alt=""
+					loading="lazy"
+					decoding="async"
+					class="mx-auto mt-10 w-full max-w-3xl rounded-xl border border-line object-cover"
+				/>
+			)
+		}
+		<div class="prose dark:prose-invert mx-auto mt-12 max-w-prose prose-a:text-accent">
 			<Content />
 		</div>
 	</article>

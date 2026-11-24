@@ -78,10 +78,9 @@ base: "/NAME-OF-REPO/",
 
 ```
 src/
-  components/    Header, Footer, Hero, Section, About, Experience, Repos, PostCard, BookCard, Contact
+  components/    Header, Footer, Hero, Section, About, Experience, Repos, PostCard, ArticleCard, FeaturedProjects, Contact
   content/
     blog/fa|en/  پست‌های وبلاگ (Markdown)
-    books/fa|en/ رمان‌ها و آثار
   data/          settings.json + profile.fa.json + profile.en.json  (محتوای ثابت صفحه‌ها)
   i18n/ui.ts     تمام متن‌های رابط کاربری دو زبان
   layouts/       Base.astro (SEO، تم، فونت، انیمیشن اسکرول)
